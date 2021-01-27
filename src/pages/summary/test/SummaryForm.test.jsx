@@ -1,26 +1,27 @@
 import { render, fireEvent, screen } from "@testing-library/react";
-import { SummaryForm } from "..SummaryForm/";
+import SummaryForm from "../SummaryForm";
 
 test("checkbox is unchecked by default", () => {
   render(<SummaryForm />);
-  const checkbox = screen.getByRole("checkbox", { name: "Disabled" });
+  const checkbox = screen.getByRole("checkbox", {
+    name: /terms and conditions/i,
+  });
   expect(checkbox).not.toBeChecked();
+
+  const confirmButton = screen.getByRole("button", { name: /confirm order/i });
+  expect(confirmButton).toBeDisabled();
 });
 
 test("checking checkbox enables button", () => {
   render(<SummaryForm />);
-  const checkbox = screen.getByRole("checkbox", { name: "Disabled" });
-  const button = screen.getByRole("button", { name: "Button" });
+  const checkbox = screen.getByRole("checkbox", {
+    name: /terms and conditions/i,
+  });
+  const confirmButton = screen.getByRole("button", { name: /confirm order/i });
 
   fireEvent.click(checkbox);
-  expect(button).toBeEnabled();
-});
+  expect(confirmButton).toBeEnabled();
 
-test("unchecking checkbox again disables button", () => {
-  render(<SummaryForm />);
-  const checkbox = screen.getByRole("checkbox", { name: "Disabled" });
-  const button = screen.getByRole("button", { name: "Button" });
-    
   fireEvent.click(checkbox);
-  expect(button).toBeDisabled();
+  expect(confirmButton).toBeDisabled();
 });
